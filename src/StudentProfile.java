@@ -20,8 +20,8 @@ public class StudentProfile {
         int compScore = 0;
         List<List<String>> otherAnswers = other.getAnswers();
 
-//        if (answers.size() != otherScores.size())
-//            throw new IllegalArgumentException("Score arrays size mismatch");
+        if (answers.size() != otherAnswers.size())
+            throw new IllegalArgumentException("Number of questions mismatch");
 
         for (int i = 0; i < answers.size(); i++) // question number
             for (int j = 0; j < answers.get(i).size(); j++) // each answer to question i

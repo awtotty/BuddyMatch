@@ -13,6 +13,10 @@ public class Match {
     private static int nameIndex = 2; // column number that contains names/emails
 
     public static void main(String[] args) throws Exception {
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Read files
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         // Create student profiles
         List<StudentProfile> newStudents = new ArrayList<StudentProfile>();
         List<StudentProfile> buddies = new ArrayList<StudentProfile>();
@@ -60,6 +64,10 @@ public class Match {
         scanner.close();
 
 
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Run match algorithm
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         // Match algo
         List<Pair<StudentProfile, StudentProfile>> matches = new ArrayList<Pair<StudentProfile, StudentProfile>>(); // stores the pairs
         while (newStudents.size() > 0 && buddies.size() > 0) {
@@ -80,6 +88,10 @@ public class Match {
             newStudents.remove(student);
             buddies.remove(bestMatch);
         }
+
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Write results to output
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Print matches and comp scores (rework to export to csv)
         for (Pair match : matches) {
