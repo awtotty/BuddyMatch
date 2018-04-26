@@ -10,18 +10,19 @@ public class CSVUtils {
     private static final char DEFAULT_SEPARATOR = ',';
     private static final char DEFAULT_QUOTE = '"';
 
-    public static void main(String[] args) throws Exception {
-
-        String csvFile = "/Users/mkyong/csv/country2.csv";
-
-        Scanner scanner = new Scanner(new File(csvFile));
-        while (scanner.hasNext()) {
-            List<String> line = parseLine(scanner.nextLine());
-            System.out.println("Country [id= " + line.get(0) + ", code= " + line.get(1) + " , name=" + line.get(2) + "]");
-        }
-        scanner.close();
-
-    }
+//    public static void main(String[] args) throws Exception {
+//
+//        String csvFile = "/Users/atotty/Downloads/TestForm.csv";
+//
+//        Scanner scanner = new Scanner(new File(csvFile));
+//        parseLine(scanner.nextLine()); // remove top line of headers
+//        while (scanner.hasNext()) {
+//            List<String> line = parseLine(scanner.nextLine());
+//            System.out.println(" " + line.get(0) + " \t" + line.get(1) + " \t" + line.get(2));
+//        }
+//        scanner.close();
+//
+//    }
 
     public static List<String> parseLine(String cvsLine) {
         return parseLine(cvsLine, DEFAULT_SEPARATOR, DEFAULT_QUOTE);

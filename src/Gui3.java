@@ -116,30 +116,30 @@ public class Gui3 {
     private static void makeTestData() {
         students = new ArrayList<StudentProfile>();
 
-        students.add( new StudentProfile("Jim",       new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Jack",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Fred",      new int[]{5, 1, 10, 10, 10, 4, 5, 2, 2, 1}) );
-        students.add( new StudentProfile("Frida",     new int[]{4, 0, 9, 9, 10, 3, 5, 2, 1, 2}) );
-        students.add( new StudentProfile("Ally",      new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}) );
-        students.add( new StudentProfile("Augustus",  new int[]{1, 1, 0, 1, 2, 0, 0, 2, 1, 0}) );
-        students.add( new StudentProfile("Nicole",    new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Nancy",     new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-
-        students.add( new StudentProfile("Catherine", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Cameron",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Zoe",       new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Zoey",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Bill",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Beverly",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Maurice",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Matt",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Jim",       new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Jack",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Fred",      new int[]{5, 1, 10, 10, 10, 4, 5, 2, 2, 1}) );
+//        students.add( new StudentProfile("Frida",     new int[]{4, 0, 9, 9, 10, 3, 5, 2, 1, 2}) );
+//        students.add( new StudentProfile("Ally",      new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}) );
+//        students.add( new StudentProfile("Augustus",  new int[]{1, 1, 0, 1, 2, 0, 0, 2, 1, 0}) );
+//        students.add( new StudentProfile("Nicole",    new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Nancy",     new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//
+//        students.add( new StudentProfile("Catherine", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Cameron",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Zoe",       new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Zoey",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Bill",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Beverly",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Maurice",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+//        students.add( new StudentProfile("Matt",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
 
         // Randomize arrays for testing
         for (StudentProfile student : students) {
             int[] randScores = new int[10];
             for (int i = 0; i < randScores.length; i++)
                 randScores[i] = (int) ( Math.random()* 10 + 1 );
-            student.setScores(randScores);
+//            student.setScores(randScores);
 //            System.out.println(student + ": " + Arrays.toString(student.getScores()));
         }
 //        System.out.println();

@@ -8,8 +8,8 @@ import java.util.Scanner;
 
 public class Match {
 
-    private static String csvFilePath = "/Users/mkyong/csv/country2.csv";
-    private static int nameIndex = 1; // column number that contains names/emails
+    private static String csvFilePath = "/Users/atotty/Downloads/TestForm.csv";
+    private static int nameIndex = 2; // column number that contains names/emails
 
     public static void main(String[] args) throws Exception {
         // Create student profiles
@@ -17,46 +17,24 @@ public class Match {
 
         // Read csv file
         Scanner scanner = new Scanner(new File(csvFilePath));
+        CSVUtils.parseLine(scanner.nextLine()); // remove top line of headers
         while (scanner.hasNext()) {
             List<String> line = CSVUtils.parseLine(scanner.nextLine());
             students.add( new StudentProfile(line.get(nameIndex)) ); // Make new student with email as name
             for (int i = nameIndex+1; i < line.size(); i++) { // The rest of the entries in line are answers, so add them
                 // Get student that was just added to students
                 StudentProfile s = students.get(students.size()-1);
-                s.addAnswers(line.get(i));
+                String answers = line.get(i); // get all answers to question i-1 as one string
+
+                // TODO Fixing error from CSV reader
+                if (answers.charAt(0) == '"')
+                    answers = answers.substring(1);
+
+                // Split string on ", "
+                s.addAnswers(Arrays.asList( answers.split(", ") ));
             }
         }
         scanner.close();
-
-
-        
-//        students.add( new StudentProfile("Jim",       new ArrayList<>()) );
-//        students.add( new StudentProfile("Jack",      new ArrayList<>()) );
-//        students.add( new StudentProfile("Fred",      new ArrayList<>()) );
-//        students.add( new StudentProfile("Frida",     new ArrayList<>()) );
-//        students.add( new StudentProfile("Ally",      new ArrayList<>()) );
-//        students.add( new StudentProfile("Augustus",  new ArrayList<>()) );
-//        students.add( new StudentProfile("Nicole",    new ArrayList<>()) );
-//        students.add( new StudentProfile("Nancy",     new ArrayList<>()) );
-//
-//        students.add( new StudentProfile("Catherine", new ArrayList<>()) );
-//        students.add( new StudentProfile("Cameron",   new ArrayList<>()) );
-//        students.add( new StudentProfile("Zoe",       new ArrayList<>()) );
-//        students.add( new StudentProfile("Zoey",      new ArrayList<>()) );
-//        students.add( new StudentProfile("Bill",      new ArrayList<>()) );
-//        students.add( new StudentProfile("Beverly",   new ArrayList<>()) );
-//        students.add( new StudentProfile("Maurice",   new ArrayList<>()) );
-//        students.add( new StudentProfile("Matt",      new ArrayList<>()) );
-
-        // Randomize arrays for testing
-//        for (StudentProfile student : students) {
-//            int[] randScores = new int[10];
-//            for (int i = 0; i < randScores.length; i++)
-//                randScores[i] = (int) ( Math.random()* 10 + 1 );
-//            student.get(randScores);
-//            System.out.println(student + ": " + Arrays.toString(student.getScores()));
-//        }
-//        System.out.println();
 
 
         // Match algo
