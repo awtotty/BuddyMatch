@@ -73,12 +73,12 @@ public class Match {
         while (newStudents.size() > 0 && buddies.size() > 0) {
             // Find match for next student
             StudentProfile student = newStudents.get(0);
-            int minScore = Integer.MAX_VALUE;
+            int maxScore = Integer.MIN_VALUE;
             StudentProfile bestMatch = null;
 
             for (StudentProfile other : buddies) {
-                if (student != other && student.getCompatibilityScore(other) < minScore) {
-                    minScore = student.getCompatibilityScore(other);
+                if (student != other && student.getCompatibilityScore(other) < maxScore) {
+                    maxScore = student.getCompatibilityScore(other);
                     bestMatch = other;
                 }
             }
