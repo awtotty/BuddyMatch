@@ -1,22 +1,31 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentProfile {
 
     private String name;
-    private int[] scores;
+    private List<String> answers;
 
-    public StudentProfile(String name, int[] scores) {
+    public StudentProfile(String name) {
         this.name = name;
-        this.scores = scores;
+        this.answers = new ArrayList<>();
+    }
+
+    public StudentProfile(String name, List<String> answers) {
+        this.name = name;
+        this.answers = answers;
     }
 
     public int getCompatibilityScore(StudentProfile other) {
         int compScore = 0;
-        int[] otherScores = other.getScores();
+        List<String> otherAnswers = other.getAnswers();
 
-        if (scores.length != otherScores.length)
-            throw new IllegalArgumentException("Score arrays size mismatch");
+//        if (answers.size() != otherScores.size())
+//            throw new IllegalArgumentException("Score arrays size mismatch");
 
-        for (int i = 0; i < scores.length; i++)
-            compScore += Math.abs(scores[i] - otherScores[i]);
+        for (int i = 0; i < answers.size(); i++)
+            if ( otherAnswers.get(i).contains(answers.get(i)) )
+                compScore++;
 
         return compScore;
     }
@@ -25,12 +34,12 @@ public class StudentProfile {
         return name;
     }
 
-    public int[] getScores() {
-        return scores;
+    public List<String> getAnswers() {
+        return answers;
     }
 
-    public void setScores(int[] scores) {
-        this.scores = scores;
+    public void addAnswers(String answers) {
+        this.answers.add(answers);
     }
 
     @Override

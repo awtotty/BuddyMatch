@@ -1,41 +1,62 @@
 import javafx.util.Pair;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Match {
 
-    public static void main(String[] args) {
-        // Create student profiles for testing
+    private static String csvFilePath = "/Users/mkyong/csv/country2.csv";
+    private static int nameIndex = 1; // column number that contains names/emails
+
+    public static void main(String[] args) throws Exception {
+        // Create student profiles
         List<StudentProfile> students = new ArrayList<StudentProfile>();
 
-        students.add( new StudentProfile("Jim",       new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Jack",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Fred",      new int[]{5, 1, 10, 10, 10, 4, 5, 2, 2, 1}) );
-        students.add( new StudentProfile("Frida",     new int[]{4, 0, 9, 9, 10, 3, 5, 2, 1, 2}) );
-        students.add( new StudentProfile("Ally",      new int[]{1, 1, 1, 1, 1, 1, 1, 1, 1, 1}) );
-        students.add( new StudentProfile("Augustus",  new int[]{1, 1, 0, 1, 2, 0, 0, 2, 1, 0}) );
-        students.add( new StudentProfile("Nicole",    new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Nancy",     new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+        // Read csv file
+        Scanner scanner = new Scanner(new File(csvFilePath));
+        while (scanner.hasNext()) {
+            List<String> line = CSVUtils.parseLine(scanner.nextLine());
+            students.add( new StudentProfile(line.get(nameIndex)) ); // Make new student with email as name
+            for (int i = nameIndex+1; i < line.size(); i++) { // The rest of the entries in line are answers, so add them
+                // Get student that was just added to students
+                StudentProfile s = students.get(students.size()-1);
+                s.addAnswers(line.get(i));
+            }
+        }
+        scanner.close();
 
-        students.add( new StudentProfile("Catherine", new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Cameron",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Zoe",       new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Zoey",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Bill",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Beverly",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Maurice",   new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
-        students.add( new StudentProfile("Matt",      new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}) );
+
+        
+//        students.add( new StudentProfile("Jim",       new ArrayList<>()) );
+//        students.add( new StudentProfile("Jack",      new ArrayList<>()) );
+//        students.add( new StudentProfile("Fred",      new ArrayList<>()) );
+//        students.add( new StudentProfile("Frida",     new ArrayList<>()) );
+//        students.add( new StudentProfile("Ally",      new ArrayList<>()) );
+//        students.add( new StudentProfile("Augustus",  new ArrayList<>()) );
+//        students.add( new StudentProfile("Nicole",    new ArrayList<>()) );
+//        students.add( new StudentProfile("Nancy",     new ArrayList<>()) );
+//
+//        students.add( new StudentProfile("Catherine", new ArrayList<>()) );
+//        students.add( new StudentProfile("Cameron",   new ArrayList<>()) );
+//        students.add( new StudentProfile("Zoe",       new ArrayList<>()) );
+//        students.add( new StudentProfile("Zoey",      new ArrayList<>()) );
+//        students.add( new StudentProfile("Bill",      new ArrayList<>()) );
+//        students.add( new StudentProfile("Beverly",   new ArrayList<>()) );
+//        students.add( new StudentProfile("Maurice",   new ArrayList<>()) );
+//        students.add( new StudentProfile("Matt",      new ArrayList<>()) );
 
         // Randomize arrays for testing
-        for (StudentProfile student : students) {
-            int[] randScores = new int[10];
-            for (int i = 0; i < randScores.length; i++)
-                randScores[i] = (int) ( Math.random()* 10 + 1 );
-            student.setScores(randScores);
-            System.out.println(student + ": " + Arrays.toString(student.getScores()));
-        }
-        System.out.println();
+//        for (StudentProfile student : students) {
+//            int[] randScores = new int[10];
+//            for (int i = 0; i < randScores.length; i++)
+//                randScores[i] = (int) ( Math.random()* 10 + 1 );
+//            student.get(randScores);
+//            System.out.println(student + ": " + Arrays.toString(student.getScores()));
+//        }
+//        System.out.println();
 
 
         // Match algo
