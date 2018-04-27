@@ -23,6 +23,7 @@ public class StudentProfile {
         if (answers.size() != otherAnswers.size())
             throw new IllegalArgumentException("Number of questions mismatch");
 
+        // For each answer that matches add a point to compScore
         for (int i = 0; i < answers.size(); i++) // question number
             for (int j = 0; j < answers.get(i).size(); j++) // each answer to question i
                 if ( otherAnswers.get(i).contains(answers.get(i).get(j)) )
