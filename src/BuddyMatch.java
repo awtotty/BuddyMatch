@@ -23,6 +23,7 @@ public class BuddyMatch extends JPanel
     JFileChooser fc;
     private static String csvNewStudents;
     private static String csvBuddies;
+    private static String outputFile;
     private static int nameIndex = 2; // column number that contains names/emails
 
     public BuddyMatch() {
@@ -79,7 +80,7 @@ public class BuddyMatch extends JPanel
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                //This is where a real application would open the file.
+                csvNewStudents = file.toString();
                 log.append("Opening: " + file.getName() + "." + newline);
             } else {
                 log.append("Open command cancelled by user." + newline);
@@ -92,7 +93,7 @@ public class BuddyMatch extends JPanel
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                //This is where a real application would open the file.
+                csvBuddies = file.toString();
                 log.append("Opening: " + file.getName() + "." + newline);
             } else {
                 log.append("Open command cancelled by user." + newline);
@@ -104,8 +105,8 @@ public class BuddyMatch extends JPanel
             int returnVal = fc.showSaveDialog(BuddyMatch.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 File file = fc.getSelectedFile();
-                //This is where a real application would save the file.
-                log.append("Saving: " + file.getName() + "." + newline);
+                outputFile = file.toString();
+                log.append("Save to: " + file.getName() + "." + newline);
             } else {
                 log.append("Save command cancelled by user." + newline);
             }
@@ -126,11 +127,11 @@ public class BuddyMatch extends JPanel
 
                     log.append("Match complete." + newline);
 
-                    // Print matches and comp scores (rework to export to csv)
+                    // Print matches and comp scores TODO (rework to export to csv)
                     for (Pair match : matches) {
                         StudentProfile s1 = (StudentProfile) match.getKey();
                         StudentProfile s2 = (StudentProfile) match.getValue();
-                        log.append(s1 + " matched with " + s2 + " \t(with compatibility score " + s1.getCompatibilityScore(s2) + ")");
+                        log.append(s1 + " matched with " + s2 + " \t(with compatibility score " + s1.getCompatibilityScore(s2) + ")" + newline);
                     }
                 }
                 catch (Exception o) {}
@@ -194,7 +195,7 @@ public class BuddyMatch extends JPanel
             StudentProfile bestMatch = null;
 
             for (StudentProfile other : buddies) {
-                if (student != other && student.getCompatibilityScore(other) < maxScore) {
+                if (student != other && student.getCompatibilityScore(other) > maxScore) {
                     maxScore = student.getCompatibilityScore(other);
                     bestMatch = other;
                 }

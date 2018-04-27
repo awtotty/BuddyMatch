@@ -77,7 +77,7 @@ public class Match {
             StudentProfile bestMatch = null;
 
             for (StudentProfile other : buddies) {
-                if (student != other && student.getCompatibilityScore(other) < maxScore) {
+                if (student != other && student.getCompatibilityScore(other) > maxScore) {
                     maxScore = student.getCompatibilityScore(other);
                     bestMatch = other;
                 }
