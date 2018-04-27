@@ -1,22 +1,32 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class StudentProfile {
 
     private String name;
-    private int[] scores;
+    private List<List<String>> answers;
 
-    public StudentProfile(String name, int[] scores) {
+    public StudentProfile(String name) {
         this.name = name;
-        this.scores = scores;
+        this.answers = new ArrayList<>();
+    }
+
+    public StudentProfile(String name, List<List<String>> answers) {
+        this.name = name;
+        this.answers = answers;
     }
 
     public int getCompatibilityScore(StudentProfile other) {
         int compScore = 0;
-        int[] otherScores = other.getScores();
+        List<List<String>> otherAnswers = other.getAnswers();
 
-        if (scores.length != otherScores.length)
-            throw new IllegalArgumentException("Score arrays size mismatch");
+        if (answers.size() != otherAnswers.size())
+            throw new IllegalArgumentException("Number of questions mismatch");
 
-        for (int i = 0; i < scores.length; i++)
-            compScore += Math.abs(scores[i] - otherScores[i]);
+        for (int i = 0; i < answers.size(); i++) // question number
+            for (int j = 0; j < answers.get(i).size(); j++) // each answer to question i
+                if ( otherAnswers.get(i).contains(answers.get(i).get(j)) )
+                    compScore++;
 
         return compScore;
     }
@@ -25,12 +35,12 @@ public class StudentProfile {
         return name;
     }
 
-    public int[] getScores() {
-        return scores;
+    public List<List<String>> getAnswers() {
+        return answers;
     }
 
-    public void setScores(int[] scores) {
-        this.scores = scores;
+    public void addAnswers(List<String> answers) {
+        this.answers.add(answers);
     }
 
     @Override
