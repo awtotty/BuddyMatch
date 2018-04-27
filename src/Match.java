@@ -1,3 +1,7 @@
+/*
+ * This is a command line version of the buddy match program. The GUI program is better. Use that.
+ */
+
 import javafx.util.Pair;
 
 import java.io.File;

@@ -1,6 +1,14 @@
+/*
+ * This program allows users to choose two csv files containing survey data from google sheets
+ * and matches individuals from one of the files to those of another by maximizing their compatibility
+ * score, which is defined in the class StudentProfile.
+ *
+ * If the two source files are actually the same file, the program matches the people in the group to
+ * other people in the same group. Otherwise, it matches people from source 1 with people in source 2.
+ */
+
 
 import javafx.util.Pair;
-
 import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -10,11 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 import javax.swing.*;
 import javax.swing.SwingUtilities;
-import javax.swing.filechooser.*;
 
-/*
- * TODO comments
- */
 public class BuddyMatch extends JPanel
                         implements ActionListener {
     static private final String newline = "\n";
@@ -26,6 +30,7 @@ public class BuddyMatch extends JPanel
     private static String outputFile;
     private static int nameIndex = 2; // column number that contains names/emails
 
+    // Create the Panel with buttons and a log.
     public BuddyMatch() {
         super(new BorderLayout());
 
@@ -72,9 +77,10 @@ public class BuddyMatch extends JPanel
         add(logScrollPane, BorderLayout.CENTER);
     }
 
+    // Listen for button presses and do the appropriate actions.
     public void actionPerformed(ActionEvent e) {
 
-        // TODO Handle src1 button action.
+        // Handle src1 button action.
         if (e.getSource() == src1Button) {
             int returnVal = fc.showOpenDialog(BuddyMatch.this);
 
@@ -82,12 +88,19 @@ public class BuddyMatch extends JPanel
                 File file = fc.getSelectedFile();
                 csvNewStudents = file.toString();
                 log.append("Opening: " + file.getName() + "." + newline);
+
+                // Default write file location (if no location is specified in the save button
+                if (outputFile == null) {
+                    int end = csvNewStudents.lastIndexOf("/") + 1;
+                    outputFile = csvNewStudents.substring(0, end) + "buddyResults.txt";
+                }
+
             } else {
                 log.append("Open command cancelled by user." + newline);
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-            // TODO Handle src2 button action.
+            // Handle src2 button action.
         } else if (e.getSource() == src2Button) {
             int returnVal = fc.showOpenDialog(BuddyMatch.this);
 
@@ -100,7 +113,7 @@ public class BuddyMatch extends JPanel
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-            // TODO Handle save button action.
+            // Handle save button action.
         } else if (e.getSource() == saveButton) {
             int returnVal = fc.showSaveDialog(BuddyMatch.this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -112,7 +125,7 @@ public class BuddyMatch extends JPanel
             }
             log.setCaretPosition(log.getDocument().getLength());
 
-            // Handle run button action TODO test
+            // Handle run button action
         } else if (e.getSource() == runButton) {
             if (csvNewStudents != null && csvBuddies != null) {
                 log.append("Running match algorithm." + newline);
@@ -120,19 +133,34 @@ public class BuddyMatch extends JPanel
                 ///////////////////////////////////////////////////////
                 // run match
                 try {
-                    List<StudentProfile> newStudents = readCSV(csvNewStudents);
-                    List<StudentProfile> buddies = readCSV(csvBuddies);
+                    List<StudentProfile> newStudents;
+                    List<StudentProfile> buddies;
+
+                    // If two source files are the same, match within the group
+                    if (csvNewStudents.equals(csvBuddies)) {
+                        newStudents = readCSV(csvNewStudents);
+                        buddies = newStudents;
+                    } // Otherwise, match group1 to group2
+                    else {
+                        newStudents = readCSV(csvNewStudents);
+                        buddies = readCSV(csvBuddies);
+                    }
 
                     List<Pair<StudentProfile, StudentProfile>> matches = match(newStudents, buddies);
 
-                    log.append("Match complete." + newline);
-
-                    // Print matches and comp scores TODO (rework to export to csv)
+                    // Print matches and comp scores
+                    FileWriter writer = new FileWriter(outputFile);
                     for (Pair match : matches) {
                         StudentProfile s1 = (StudentProfile) match.getKey();
                         StudentProfile s2 = (StudentProfile) match.getValue();
-                        log.append(s1 + " matched with " + s2 + " \t(with compatibility score " + s1.getCompatibilityScore(s2) + ")" + newline);
+                        writer.write(s1 + " matched with " + s2 + " \t(with compatibility score " + s1.getCompatibilityScore(s2) + ")" + newline);
+                        // Uncomment this line to print results in the log.
+                        //log.append(s1 + " matched with " + s2 + " \t(with compatibility score " + s1.getCompatibilityScore(s2) + ")" + newline);
                     }
+                    writer.close();
+
+                    log.append("Match complete." + newline);
+                    log.append("Results can be found in " + outputFile + newline);
                 }
                 catch (Exception o) {}
                 // end match algo
@@ -146,7 +174,7 @@ public class BuddyMatch extends JPanel
     }
 
     /**
-     * TODO comments
+     * This method uses the CSVUtils class to read the contents of the input files for survey response data.
      */
     public static List<StudentProfile> readCSV(String filePath) throws Exception {
         List<StudentProfile> newStudents = new ArrayList<StudentProfile>();
@@ -155,13 +183,20 @@ public class BuddyMatch extends JPanel
         Scanner scanner = new Scanner(new File(filePath));
 
 
-        // TODO find the name index in the file
+        // Find the index of the name column in the file
         List<String> headers = CSVUtils.parseLine(scanner.nextLine()); // remove top line of headers
         // If any of the column headers is "Name", use that.
-        // Else if any of teh column headers is "Email Address", use that.
-        // Else throw an error about incorrect data formatting.
+        if (headers.contains("Name")) {
+            nameIndex = headers.indexOf("Name");
+        } // Else if any of the column headers is "Email Address", use that.
+        else if (headers.contains("Email Address")) {
+            nameIndex = headers.indexOf("Email Address");
+        } // Else throw an error about incorrect data formatting.
+        else {
+            throw new IllegalArgumentException("The data file does not contain student identification");
+        }
 
-
+        // Read the data and pass it to a List
         while (scanner.hasNext()) {
             List<String> line = CSVUtils.parseLine(scanner.nextLine());
             newStudents.add( new StudentProfile(line.get(nameIndex)) ); // Make new student with email as name
@@ -184,7 +219,8 @@ public class BuddyMatch extends JPanel
     }
 
     /**
-     * TODO comments
+     * This matches members of newStudents to members of buddies. It assumes the getCompatibilityScore method from the
+     * StudentProfile class produces a greater value when compatibility is improved.
      */
     public static List<Pair<StudentProfile, StudentProfile>> match(List<StudentProfile> newStudents, List<StudentProfile> buddies) {
         List<Pair<StudentProfile, StudentProfile>> matches = new ArrayList<Pair<StudentProfile, StudentProfile>>(); // stores the pairs
